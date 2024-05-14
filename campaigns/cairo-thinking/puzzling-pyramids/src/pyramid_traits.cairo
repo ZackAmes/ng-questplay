@@ -61,7 +61,6 @@ impl PyramidSearchImpl<
         if found {
             res.append(chambers.at(*self.top).item.clone());
             res = reverse_array(res);
-            res.len().print();
             return Option::Some(res);
         }
         else {
@@ -108,7 +107,6 @@ fn reverse_array<T, +Clone<T>, +Drop<T>>(arr: Array<T>) -> Array<T>{
 
     while index <= arr.len() {
         let next = arr.at(arr.len() - index).clone();
-        next.clone().print();
         res.append(next);
         index+=1;
     };
