@@ -50,8 +50,7 @@ impl PyramidSearchImpl<
     T, 
     impl TClone: Clone<T>, 
     impl TDrop: Drop<T>, 
-    impl TPartialEq: PartialEq<T>,
-    +PrintTrait<T>
+    impl TPartialEq: PartialEq<T>
 > of PyramidSearchTrait<T> {
     fn search(self: @Pyramid<T>, key: T) -> Option<Array<T>> {
         // IMPLEMENT THIS FUNCTION
@@ -102,7 +101,7 @@ fn search_chamber<T, +Clone<T>, +Drop<T>, +PartialEq<T>>(ref chambers: Span<Cham
     return false;
 }
 
-fn reverse_array<T, +Clone<T>, +Drop<T>, +PrintTrait<T>>(arr: Array<T>) -> Array<T>{
+fn reverse_array<T, +Clone<T>, +Drop<T>>(arr: Array<T>) -> Array<T>{
     
     let mut res = ArrayTrait::new();
     let mut index = 1;
