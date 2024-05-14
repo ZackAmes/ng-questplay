@@ -1,12 +1,13 @@
-#[derive(Copy, Drop)]
+#[derive(Copy, Drop, Display)]
 struct Sorcerer {
     attack: u8,
     health: u8,
-    talent: Talent
+    talent: Talent,
+    damaged: bool
 }
 
 // For Part 2...
-#[derive(Copy, Drop)]
+#[derive(Copy, Drop, PartialEq, Debug)]
 enum Talent {
     Talentless: (),
     Venomous: (),
@@ -21,16 +22,27 @@ impl SorcererImpl of SorcererTrait {
         Sorcerer {
             attack: attack,
             health: health,
-            talent: Talent::Talentless(())
+            talent: Talent::Talentless(()),
+            damaged: false
         }
     }
-
+    
+    fn dmg(ref self: Sorcerer, amt: u8) {
+        if amt > self.health {
+            self.health = 0;
+        }
+        else {
+            self.health -= amt;
+    
+        }
+    }
     // For Part 2...
     fn with_talent(attack: u8, health: u8, talent: Talent) -> Sorcerer {
         Sorcerer {
             attack: attack,
             health: health,
-            talent: talent
+            talent: talent,
+            damaged: false
         }
     }
 

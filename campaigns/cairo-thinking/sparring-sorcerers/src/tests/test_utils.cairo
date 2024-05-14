@@ -1,6 +1,6 @@
 use array::ArrayTrait;
 use option::OptionTrait;
-
+use core::debug::PrintTrait;
 use src::sorcerer::{ Sorcerer, SorcererTrait };
 
 #[generate_trait]
@@ -19,7 +19,6 @@ fn assert_team(mut actual: Array<Sorcerer>, mut expected: Array<Sorcerer>) {
     while (!actual.is_empty()) {
         let s1 = actual.pop_front().unwrap();
         let s2 = expected.pop_front().unwrap();
-
         assert(s1.health() == s2.health(), 'Unexpected sorcerer: bad health');
         assert(s1.attack() == s2.attack(), 'Unexpected sorcerer: bad attack');
     }
