@@ -1,4 +1,3 @@
-#[derive(Clone)]
 struct Chamber<T> {
     item: T,
     lower_chambers: Option<(usize, usize)>

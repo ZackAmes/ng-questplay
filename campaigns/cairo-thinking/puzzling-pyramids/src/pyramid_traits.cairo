@@ -16,14 +16,14 @@ impl PyramidIntoArray<
     fn into(self: Pyramid<T>) -> Array<T> {
         // IMPLEMENT THIS FUNCTION
         let mut res = ArrayTrait::new();
-        let mut chambers = self.chambers.clone();
+        let mut chambers = self.chambers.span();
         handle_chamber(ref chambers, self.top, ref res);
         res
         
     }
 }
 
-fn handle_chamber<T, impl TClone: Clone<T>, impl TDrop: Drop<T>>(ref chambers: Array<Chamber<T>>, index: usize, ref res: Array<T>) {
+fn handle_chamber<T, impl TClone: Clone<T>, impl TDrop: Drop<T>>(ref chambers: Span<Chamber<T>>, index: usize, ref res: Array<T>) {
     
     let chamber = chambers.at(index);
     match chamber.lower_chambers {
@@ -55,12 +55,12 @@ impl PyramidSearchImpl<
 > of PyramidSearchTrait<T> {
     fn search(self: @Pyramid<T>, key: T) -> Option<Array<T>> {
         // IMPLEMENT THIS FUNCTION
-        let mut chambers = self.chambers.clone();
+        let mut chambers = self.chambers.span();
         let mut res = ArrayTrait::new();
         let found = search_chamber(ref chambers, *self.top, key, ref res);
         
         if found {
-            res.append(chambers.at(*self.top).clone().item);
+            res.append(chambers.at(*self.top).item.clone());
             res = reverse_array(res);
             res.len().print();
             return Option::Some(res);
@@ -72,26 +72,24 @@ impl PyramidSearchImpl<
     }
 }
 
-fn search_chamber<T, +Clone<T>, +Drop<T>, +PartialEq<T>>(ref chambers: Array<Chamber<T>>, index: usize, key: T, ref res: Array<T>) -> bool {
+fn search_chamber<T, +Clone<T>, +Drop<T>, +PartialEq<T>>(ref chambers: Span<Chamber<T>>, index: usize, key: T, ref res: Array<T>) -> bool {
     
-    let searching = chambers.at(index).clone();
-    if searching.item == key {
+    let searching = chambers.at(index);
+    if searching.item == @key {
         return true;
     }
     else {
         match searching.lower_chambers {
             Option::Some((left, right)) => {
-                let in_left = search_chamber(ref chambers, left, key.clone(), ref res);
+                let in_left = search_chamber(ref chambers, *left, key.clone(), ref res);
                 if in_left {
-                    left.print();
-                    res.append((chambers.at(left)).item.clone());
+                    res.append((chambers.at(*left)).item.clone());
                     return true;
                 }
                 else {
-                    let in_right = search_chamber(ref chambers, right, key.clone(), ref res);
+                    let in_right = search_chamber(ref chambers, *right, key.clone(), ref res);
                     if in_right {
-                        right.print();
-                        res.append((chambers.at(right)).item.clone());
+                        res.append((chambers.at(*right)).item.clone());
                         return true;
                     }
                 }
